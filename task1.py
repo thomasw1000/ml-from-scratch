@@ -30,8 +30,7 @@ def generate_labels(
         p : np.ndarray = np.array([[-2, 1]])
 ) -> np.ndarray:
     sig = sigmoid(lin_func(x, p))
-    noise = np.random.normal(0, 0.1, x.shape)
-    return (sig>0.5+noise).astype(int)
+    return (np.random.rand(*x.shape) < sig).astype(int)
 
 def binary_cross_entropy(
         y: np.ndarray,
@@ -98,9 +97,9 @@ def logistic_regression(
         dx: float=1e-3,
         lr: float=1e-3
 ) -> np.ndarray:
-    p = np.array([[1, 0]])
+    p = np.array([[-1, 0]])
     x = np.linspace(-2, 2, 200)
-    labels = generate_labels(x, p).reshape(-1)
+    labels = generate_labels(x).reshape(-1)
     if verbose:
         plot_classes(x, labels, (sigmoid(lin_func(x, p))).astype(int).reshape(-1))
     for i in range(epochs):
